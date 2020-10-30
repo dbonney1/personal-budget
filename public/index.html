@@ -116,15 +116,7 @@
             datasets: [
                 {
                     data: [],
-                    backgroundColor: [
-                        '#ffcd56',
-                        '#ff6384',
-                        '#36a2eb',
-                        '#fd6b19',
-                        '#800080',
-                        '#32CD32',
-                        '#072F5F'
-                    ],
+                    backgroundColor: [],
                 }
             ],
             labels: []
@@ -139,12 +131,15 @@
         }
 
         function getBudget() {
-            axios.get('http://localhost:3000/budget')
+            // use the new endpoint to retrieve database data
+            axios.get('http://localhost:3000/budgetData')
             .then(function (res) {
                 console.log(res.data);
-                for (var i = 0; i < res.data.myBudget.length; i++) {
-                    dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-                    dataSource.labels[i] = res.data.myBudget[i].title;
+                for (var i = 0; i < res.data.length; i++) {
+                    // all data will be received via the database collection documents
+                    dataSource.datasets[0].data[i] = res.data[i].budget;
+                    dataSource.labels[i] = res.data[i].title;
+                    dataSource.datasets[0].backgroundColor[i] = res.data[i].color;
                 }
                 createChart();
             });
